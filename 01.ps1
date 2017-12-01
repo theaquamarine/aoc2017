@@ -16,3 +16,5 @@ for ($i=0; $i -lt $puzzleinput.length; $i++) {
 }
 
 $acc
+
+# Part One answer: 1144
