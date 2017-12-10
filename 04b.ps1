@@ -1,12 +1,13 @@
 # param ([Parameter(Mandatory=$true)]$puzzleinput)
 
-
-function Test-ValidPassword {
-    param ([Parameter(Mandatory=$true, ValueFromPipeline=$true)] [string]$password)
-
-    if (($password -split ' ' | %{($_.ToCharArray() | Sort-Object) -join ''} | Group-Object)| ?{$_.Count -gt 1}) {$false} else {$true}
+filter Sort-String {
+    ($_.ToCharArray() | Sort-Object) -join ''
 }
 
-Get-Content ./04input.txt | ?{Test-ValidPassword $_} | Measure-Object | Select-Object -ExpandProperty Count
+filter Test-ValidPassword {
+    if (-not( ($_ -split ' ' | Sort-String | Group-Object)| ? Count -gt 1)) {$_}
+}
+
+Get-Content ./04input.txt | Test-ValidPassword | Measure-Object | Select-Object -ExpandProperty Count
 
 # Part Two answer: 251
